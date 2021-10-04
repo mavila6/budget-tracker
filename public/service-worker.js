@@ -1,3 +1,4 @@
+// Global variables
 const CACHE_NAME = "bt-cache";
 const DATA_CACHE_NAME = "bt-data-cache";
 
@@ -17,3 +18,15 @@ const FILES_TO_CACHE = [
     '/icons/icon-384x384.png',
     '/icons/icon-512x512.png'
 ];
+
+// Add event listener to install cache
+self.addEventListener("install", e => {
+    e.waitUntil(
+        caches.open(DATA_CACHE_NAME).then(cache => {
+            console.log("Installing" + CACHE_NAME);
+            return cache.addAll(FILES_TO_CACHE);
+        })
+    );
+    self.skipWaiting();
+});
+
