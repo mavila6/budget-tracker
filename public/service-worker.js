@@ -30,3 +30,18 @@ self.addEventListener("install", e => {
     self.skipWaiting();
 });
 
+// Add event listener to delete the old cache
+self.addEventListener("activate", e => {
+    e.waitUntil(
+        caches.keys().then(keyList => {
+            return Promise.all(
+                keyList.map(key => {
+                    if (key !== CACHE_NAME && key !== DATA_CACHE_NAME) {
+                        console.log("Deleting old data cache...", key);
+                        return caches.delete(key);
+                    };
+                })
+            );
+        })
+    );
+});
