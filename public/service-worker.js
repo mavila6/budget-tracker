@@ -1,3 +1,5 @@
+const { response } = require("express");
+
 // Global variables
 const CACHE_NAME = "bt-cache";
 const DATA_CACHE_NAME = "bt-data-cache";
@@ -42,6 +44,40 @@ self.addEventListener("activate", e => {
                     };
                 })
             );
+        })
+    );
+});
+
+// Add event listener to make fetch call
+self.addEventListener("fetch", e => {
+    if (e.request.url.includes("/api/")) {
+        e.rospendWith(
+            caches.open(DATA_CACHE_NAME)
+            .then(cache => {
+                return fetch(e.request)
+                .then(response => {
+                    if (response.status === 200) {
+                        cache.put(e.request.url, response.clone());
+                    }
+                    return response;
+                })
+                .catch(err => {
+                    return cache.match(e.request);
+                });
+            })
+            .catch(err => console.log(err))
+        );
+        return;
+    }
+    e.respondWith(
+        fetch(e.request).catch(() => {
+            return caches.match(e.request).then(() => {
+                if (response) {
+                    return response;
+                } else if (e.request.headers.get("accept").includes("text/html")) {
+                    return caches.match("/");
+                };
+            });
         })
     );
 });
