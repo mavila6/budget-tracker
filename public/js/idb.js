@@ -49,8 +49,9 @@ function updateTransactions() {
                 }
                 const transaction = db.transaction(["pending_transaction"], "readWrite")
                 const storedTransactions = transaction.objectStore("pending_transaction")
+                // clears the store after the transactions are uploaded
                 storedTransactions.clear()
-                alert("All saved transactions have been submitted")
+                alert("All saved transactions have been submitted.")
             })
             .catch(err => {
                 console.log(err)
