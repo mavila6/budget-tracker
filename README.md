@@ -34,7 +34,7 @@ Clone the repository in the CLI: `git clone https://github.com/mavila6/budget-tr
 
 ### Usage
 
-Run `npm start` in the command line to initiate the server or `npx nodemon` to start the live server. Go ahead and navigate to localhost port 3001 in your browser to test the application.
+Run `npm start` in the command line to initiate the server. Go ahead and navigate to localhost port 3001 in your browser to test the application.
 
 ### Screenshots
 
